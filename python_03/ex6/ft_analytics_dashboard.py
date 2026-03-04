@@ -269,39 +269,82 @@ data_dict = {
 }
 
 
-if __name__ == "__main__" :
-    
+if __name__ == "__main__":
+
     print("=== Game Analytics Dashboard ===")
 
     print("\n=== List Comprehension Examples ===")
 
-    high_scores = [player for player , p_data in data_dict["players"].items() if p_data["total_score"] > 2000]
-    print("High scorers (>2000): " , high_scores)
+    high_scores = [
+        player
+        for player, p_data in data_dict["players"].items()
+        if p_data["total_score"] > 2000
+    ]
+    print("High scorers (>2000): ", high_scores)
 
-    # Ex = [ value *2 for player , p_data in data_dict["players"].items() for key , value in p_data.items() if key == "total_score" ]
-    
-    doubled_scores = [p_data["total_score"] * 2 for p_data in data_dict["players"].values()]
+    doubled_scores = [
+        p_data["total_score"] * 2 for p_data in data_dict["players"].values()
+    ]
     print("Scores doubled: ", doubled_scores)
 
-    active_players = [active["player"] for active in data_dict["sessions"] if active["completed"] is True and active["mode"] == "competitive"]
+    active_players = [
+        active["player"]
+        for active in data_dict["sessions"]
+        if active["completed"] is True and active["mode"] == "competitive"
+    ]
     print("Active players: ", active_players)
-
 
     print("\n=== Dict Comprehension Examples ===")
 
-    dict_scores = {player: p_data["total_score"] for player , p_data in data_dict["players"].items() }
-    print("Player scores: ",dict_scores)
+    dict_scores = {
+        player: p_data["total_score"]
+        for player, p_data in data_dict["players"].items()
+    }
+    print("Player scores: ", dict_scores)
 
     score_categories = {
-        "high" : sum(1 for val in dict_scores.values() if val >= 4000) ,
-        "medium" : sum( 1 for val in dict_scores.values() if 2000 <=val<4000),
-        "low" : sum ( 1 for val in dict_scores.values() if val < 2000)
+        "high": sum(1 for val in dict_scores.values() if val >= 4000),
+        "medium": sum(1 for val in dict_scores.values() if 2000 <= val < 4000),
+        "low": sum(1 for val in dict_scores.values() if val < 2000),
     }
-    print("Score categories: ",score_categories)
+    print("Score categories: ", score_categories)
 
-    achievement_dict = {player : p_data["achievements_count"] for player , p_data in data_dict["players"].items() }
+    achievement_dict = {
+        player: p_data["achievements_count"]
+        for player, p_data in data_dict["players"].items()
+    }
     print("Achievement counts: ", achievement_dict)
 
     print("\n=== Set Comprehension Examples ===")
 
+    unique_players = {p_data["player"] for p_data in data_dict["sessions"]}
+    print("Unique players: ", unique_players)
+
+    unique_achievements = {
+        achievement for achievement in data_dict["achievements"]
+        }
+    print("Unique achievements: ", unique_achievements)
+
+    game_modes = {p_mode["mode"] for p_mode in data_dict["sessions"]}
+    print("Game modes: ", game_modes)
+
     print("\n=== Combined Analysis ===")
+
+    print("Total players: ", len(unique_players))
+    print("Total unique achievements: ", len(unique_achievements))
+    print(
+        f"Average score: "
+        f"{sum(dict_scores.values()) / len(dict_scores.values()) :.1f}"
+    )
+
+    max_score = 0
+    p_name = ""
+    for player, score_p in dict_scores.items():
+        if score_p > max_score:
+            max_score = score_p
+            p_name = player
+
+    print(
+        f"Top performer: {p_name} ({max_score} points , "
+        f"{achievement_dict[p_name]} achievements)"
+    )

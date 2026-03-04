@@ -70,8 +70,8 @@ if __name__ == "__main__":
             except Exception as err:
                 print("Error parsing coordinates: ", err)
                 print(
-                    "Error details - Type: " +
-                    f"{type(err).__name__}, Args: {err.args}"
+                    "Error details - Type: "
+                    + f"{type(err).__name__}, Args: {err.args}"
                 )
 
     else:
